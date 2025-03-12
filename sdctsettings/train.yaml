@@ -1,0 +1,9 @@
+Name: "test-dep"
+Image: "harbor.smoa.cc/fayez/cuda121conda:runtime"
+Command: "source ~/.bashrc; conda activate marigold; cd  ~/test/marigold/Marigold; export 
+  PYTHONPATH=. ; python test.py"
+GPUType: 4090D
+GPU: 0                          # optional
+Debug: false                     # optional
+#Exclude: node75
+#Node: node59                     # optional
