@@ -54,18 +54,18 @@ from src.util.seeding import generate_seed_sequence
 
 class MarigoldTrainer:
     def __init__(
-        self,
-        cfg: OmegaConf,
-        model: MarigoldPipeline,
-        train_dataloader: DataLoader,
-        device,
-        base_ckpt_dir,
-        out_dir_ckpt,
-        out_dir_eval,
-        out_dir_vis,
-        accumulation_steps: int,
-        val_dataloaders: List[DataLoader] = None,
-        vis_dataloaders: List[DataLoader] = None,
+            self,
+            cfg: OmegaConf,
+            model: MarigoldPipeline,
+            train_dataloader: DataLoader,
+            device,
+            base_ckpt_dir,
+            out_dir_ckpt,
+            out_dir_eval,
+            out_dir_vis,
+            accumulation_steps: int,
+            val_dataloaders: List[DataLoader] = None,
+            vis_dataloaders: List[DataLoader] = None,
     ):
         self.cfg: OmegaConf = cfg
         self.model: MarigoldPipeline = model
@@ -121,7 +121,7 @@ class MarigoldTrainer:
         )
         self.prediction_type = self.training_noise_scheduler.config.prediction_type
         assert (
-            self.prediction_type == self.model.scheduler.config.prediction_type
+                self.prediction_type == self.model.scheduler.config.prediction_type
         ), "Different prediction types"
         self.scheduler_timesteps = (
             self.training_noise_scheduler.config.num_train_timesteps
@@ -135,7 +135,7 @@ class MarigoldTrainer:
         self.main_val_metric = cfg.validation.main_val_metric
         self.main_val_metric_goal = cfg.validation.main_val_metric_goal
         assert (
-            self.main_val_metric in cfg.eval.eval_metrics
+                self.main_val_metric in cfg.eval.eval_metrics
         ), f"Main eval metric `{self.main_val_metric}` not found in evaluation metrics."
         self.best_metric = 1e8 if "minimize" == self.main_val_metric_goal else -1e8
 
@@ -420,9 +420,9 @@ class MarigoldTrainer:
 
         # Save training checkpoint (can be resumed)
         if (
-            self.save_period > 0
-            and 0 == self.effective_iter % self.save_period
-            and not _is_latest_saved
+                self.save_period > 0
+                and 0 == self.effective_iter % self.save_period
+                and not _is_latest_saved
         ):
             self.save_checkpoint(ckpt_name="latest", save_train_state=True)
 
@@ -460,10 +460,10 @@ class MarigoldTrainer:
             if 0 == i:
                 main_eval_metric = val_metric_dic[self.main_val_metric]
                 if (
-                    "minimize" == self.main_val_metric_goal
-                    and main_eval_metric < self.best_metric
-                    or "maximize" == self.main_val_metric_goal
-                    and main_eval_metric > self.best_metric
+                        "minimize" == self.main_val_metric_goal
+                        and main_eval_metric < self.best_metric
+                        or "maximize" == self.main_val_metric_goal
+                        and main_eval_metric > self.best_metric
                 ):
                     self.best_metric = main_eval_metric
                     logging.info(
@@ -489,10 +489,10 @@ class MarigoldTrainer:
 
     @torch.no_grad()
     def validate_single_dataset(
-        self,
-        data_loader: DataLoader,
-        metric_tracker: MetricTracker,
-        save_to_dir: str = None,
+            self,
+            data_loader: DataLoader,
+            metric_tracker: MetricTracker,
+            save_to_dir: str = None,
     ):
         self.model.to(self.device)
         metric_tracker.reset()
@@ -502,8 +502,8 @@ class MarigoldTrainer:
         val_seed_ls = generate_seed_sequence(val_init_seed, len(data_loader))
 
         for i, batch in enumerate(
-            tqdm(data_loader, desc=f"evaluating on {data_loader.dataset.disp_name}"),
-            start=1,
+                tqdm(data_loader, desc=f"evaluating on {data_loader.dataset.disp_name}"),
+                start=1,
         ):
             assert 1 == data_loader.batch_size
             # Read input image
@@ -636,7 +636,7 @@ class MarigoldTrainer:
             logging.debug("Old checkpoint backup is removed.")
 
     def load_checkpoint(
-        self, ckpt_path, load_trainer_state=True, resume_lr_scheduler=True
+            self, ckpt_path, load_trainer_state=True, resume_lr_scheduler=True
     ):
         logging.info(f"Loading checkpoint from: {ckpt_path}")
         # Load UNet
