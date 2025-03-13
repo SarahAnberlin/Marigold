@@ -42,7 +42,7 @@ with torch.no_grad():
     print(f"Shape of empty_text_embedding: {empty_text_embedding.shape}")
 
     generator = torch.Generator(device=device)
-    latent = vae.encode(image)
+    latent = vae.encode(image)['latent_dist']
     print(f"latent keys: {latent.keys()}")
     latent = latent * vae.config.scaling_factor
 
