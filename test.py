@@ -4,6 +4,8 @@ import torchvision
 from diffusers.utils.torch_utils import randn_tensor
 import torch
 
+device = 'cuda'
+
 ppl = MarigoldDepthPipeline.from_pretrained('prs-eth/marigold-depth-lcm-v1-0')
 
 vae = ppl.vae
@@ -11,15 +13,21 @@ scheduler = ppl.scheduler
 text_encoder = ppl.text_encoder
 tokenizer = ppl.tokenizer
 unet = ppl.unet
-
-device = 'cuda'
+vae = vae.to(device)
+scheduler = scheduler.to(device)
+text_encoder = text_encoder.to(device)
+unet = unet.to(device)
+vae.eval()
+scheduler.eval()
+text_encoder.eval()
+unet.eval()
 
 image = Image.open('plain.jpg').convert('RGB')
 
 transform = torchvision.transforms.Compose([
-
     torchvision.transforms.ToTensor(),
 ])
+
 prompt = ''
 text_inputs = tokenizer(
     prompt,
