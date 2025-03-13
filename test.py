@@ -62,7 +62,7 @@ with torch.no_grad():
 
     time_step_to_denoise = 50
     scheduler.set_timesteps(time_step_to_denoise, device=device)
-    for t in range(scheduler.timesteps):
+    for t in scheduler.timesteps:
         batch_latent = torch.cat([batch_image_latent, batch_pred_latent], dim=1)  # [B,8,h,w]
         print(f"Shape of batch_latent: {batch_latent.shape}")
         noise = unet(batch_latent, t, encoder_hidden_states=text, return_dict=False)[0]  # [B,4,h,w]
