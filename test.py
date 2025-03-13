@@ -77,7 +77,8 @@ with torch.no_grad():
         noisy_latent = rgb_noise_scheduler.add_noise(
             latent, noise, rgb_t,
         )  # [B, 4, h, w]
-
+        print(
+            f"Similarity between noisy_latent and latent: {torch.nn.functional.cosine_similarity(noisy_latent, latent)}")
         batch_image_latent = noisy_latent
         batch_pred_latent = pred_latent
         effective_batch_size = batch_image_latent.shape[0]
