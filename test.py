@@ -26,6 +26,7 @@ image = Image.open('plain.jpg').convert('RGB')
 transform = torchvision.transforms.Compose([
     torchvision.transforms.ToTensor(),
 ])
+image = transform(image).unsqueeze(0).to(device)
 
 prompt = ''
 text_inputs = tokenizer(
