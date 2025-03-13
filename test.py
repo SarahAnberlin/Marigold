@@ -43,6 +43,7 @@ with torch.no_grad():
 
     generator = torch.Generator(device=device)
     latent = vae.encode(image)['latent_dist'].mode()
+    print(f"Shape of latent: {latent.shape}")
     # print(f"latent keys: {latent.keys()}")
     latent = latent * vae.config.scaling_factor
 
