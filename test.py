@@ -25,6 +25,7 @@ image = Image.open('plain.jpg').convert('RGB')
 
 transform = torchvision.transforms.Compose([
     torchvision.transforms.ToTensor(),
+    torchvision.transforms.Resize((512, 512)),
 ])
 image = transform(image).unsqueeze(0).to(device)
 
