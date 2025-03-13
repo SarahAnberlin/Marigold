@@ -14,7 +14,7 @@ unet = ppl.unet
 
 device = 'cuda'
 
-image = Image.open('data/depth/0000000000.png').convert('RGB')
+image = Image.open('plain.jpg').convert('RGB')
 
 transform = torchvision.transforms.Compose([
 
