@@ -89,13 +89,13 @@ with torch.no_grad():
         # for depth_denoise_t in scheduler.timesteps:
         for depth_denoise_t in tqdm(scheduler.timesteps):
             batch_latent = torch.cat([batch_image_latent, batch_pred_latent], dim=1)  # [B,8,h,w]
-            print(f"Shape of batch_latent: {batch_latent.shape}")
+            # print(f"Shape of batch_latent: {batch_latent.shape}")
             noise = unet(batch_latent, depth_denoise_t, encoder_hidden_states=text, return_dict=False)[0]  # [B,4,h,w]
-            print(f"Shape of noise: {noise.shape}")
+            # print(f"Shape of noise: {noise.shape}")
             batch_pred_latent = scheduler.step(
                 noise, depth_denoise_t, batch_pred_latent, generator=generator
             ).prev_sample  # [B,4,h,w]
-            print(f"Shape of batch_pred_latent: {batch_pred_latent.shape}")
+            # print(f"Shape of batch_pred_latent: {batch_pred_latent.shape}")
 
         depth = vae.decode(batch_pred_latent / vae.config.scaling_factor, return_dict=False)[0]
         rgb = vae.decode(noisy_latent / vae.config.scaling_factor, return_dict=False)[0]
