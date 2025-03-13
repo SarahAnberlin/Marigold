@@ -14,11 +14,10 @@ text_encoder = ppl.text_encoder
 tokenizer = ppl.tokenizer
 unet = ppl.unet
 vae = vae.to(device)
-scheduler = scheduler.to(device)
+scheduler = scheduler
 text_encoder = text_encoder.to(device)
 unet = unet.to(device)
 vae.eval()
-scheduler.eval()
 text_encoder.eval()
 unet.eval()
 
