@@ -81,7 +81,7 @@ with torch.no_grad():
         effective_batch_size = batch_image_latent.shape[0]
         text = empty_text_embedding[:effective_batch_size]  # [B,2,1024]
 
-        time_step_to_denoise = 1000
+        time_step_to_denoise = 50
         scheduler.set_timesteps(time_step_to_denoise, device=device)
         # for depth_denoise_t in scheduler.timesteps:
         for depth_denoise_t in tqdm(scheduler.timesteps):
