@@ -66,12 +66,14 @@ with torch.no_grad():
     rgb_noise_scheduler.set_timesteps(rgb_scheduler_timestep, device=device)
     timesteps = torch.tensor([i for i in range(rgb_scheduler_timestep)]).to(device)
 
+    noise = torch.randn(
+        latent.shape,
+        device=device,
+        generator=generator,
+    )  # [B, 4, h, w]
+
     for rgb_t in timesteps:
-        noise = torch.randn(
-            latent.shape,
-            device=device,
-            generator=generator,
-        )  # [B, 4, h, w]
+        print(f"Processing timestep: {rgb_t}")
         noisy_latent = rgb_noise_scheduler.add_noise(
             latent, noise, rgb_t,
         )  # [B, 4, h, w]
