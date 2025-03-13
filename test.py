@@ -64,10 +64,13 @@ with torch.no_grad():
     scheduler.set_timesteps(time_step_to_denoise, device=device)
     for t in range(time_step_to_denoise):
         batch_latent = torch.cat([batch_image_latent, batch_pred_latent], dim=1)  # [B,8,h,w]
+        print(f"Shape of batch_latent: {batch_latent.shape}")
         noise = unet(batch_latent, t, encoder_hidden_states=text, return_dict=False)[0]  # [B,4,h,w]
+        print(f"Shape of noise: {noise.shape}")
         batch_pred_latent = scheduler.step(
             noise, t, batch_pred_latent, generator=generator
         ).prev_sample  # [B,4,h,w]
+        print(f"Shape of batch_pred_latent: {batch_pred_latent.shape}")
 
     depth = vae.decode(batch_pred_latent / vae.config.scaling_factor, return_dict=False)[0]
     depth = depth.mean(dim=1, keepdim=True)
