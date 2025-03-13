@@ -3,6 +3,7 @@ from PIL import Image
 import torchvision
 from diffusers.utils.torch_utils import randn_tensor
 import torch
+from torchvision.utils import save_image
 
 device = 'cuda'
 
@@ -76,3 +77,4 @@ with torch.no_grad():
     depth = depth.mean(dim=1, keepdim=True)
     depth = torch.clip(depth, -1, 1)
     depth = (depth + 1) / 2
+    save_image(depth, 'depth.jpg')
