@@ -6,6 +6,7 @@ import torchvision
 from diffusers.utils.torch_utils import randn_tensor
 import torch
 from torchvision.utils import save_image
+from tqdm import tqdm
 
 device = 'cuda'
 
@@ -82,7 +83,8 @@ with torch.no_grad():
 
         time_step_to_denoise = 1000
         scheduler.set_timesteps(time_step_to_denoise, device=device)
-        for depth_denoise_t in scheduler.timesteps:
+        # for depth_denoise_t in scheduler.timesteps:
+        for depth_denoise_t in tqdm(scheduler.timesteps):
             batch_latent = torch.cat([batch_image_latent, batch_pred_latent], dim=1)  # [B,8,h,w]
             print(f"Shape of batch_latent: {batch_latent.shape}")
             noise = unet(batch_latent, depth_denoise_t, encoder_hidden_states=text, return_dict=False)[0]  # [B,4,h,w]
