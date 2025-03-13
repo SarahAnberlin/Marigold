@@ -58,7 +58,7 @@ with torch.no_grad():
         dtype=latent.dtype,
     )
     rgb_noise_scheduler = DDPMScheduler.from_pretrained('google/ddpm-ema-celebahq-256', device=device)
-    rgb_scheduler_timestep = 50
+    rgb_scheduler_timestep = 1000
     rgb_noise_scheduler.set_timesteps(rgb_scheduler_timestep, device=device)
     timesteps = torch.tensor([i for i in range(rgb_scheduler_timestep)]).to(device)
 
