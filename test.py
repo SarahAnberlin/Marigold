@@ -33,7 +33,7 @@ def hook(module, input, output):
 
 
 # 注册 hook
-vae.decoder.conv_in.register_forward_hook(hook)
+vae.decoder.mid_block.register_forward_hook(hook)
 
 image = Image.open('plain.jpg').convert('RGB')
 
