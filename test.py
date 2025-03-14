@@ -110,6 +110,7 @@ with torch.no_grad():
 
         depth = vae.decode(batch_pred_latent / vae.config.scaling_factor, return_dict=False)[0]
         depth_conv_in = feature_maps['conv_in']
+        depth_conv_in = depth_conv_in.squeeze(0).unsqueeze(1)[:32]
         print(f"Shape of depth_conv_in: {depth_conv_in.shape}")
         save_image(depth_conv_in, f"{save_root}/depth_conv_in_{rgb_t}.png")
         depth = depth.mean(dim=1, keepdim=True)
@@ -119,6 +120,7 @@ with torch.no_grad():
 
         rgb = vae.decode(noisy_latent / vae.config.scaling_factor, return_dict=False)[0]
         rgb_conv_in = feature_maps['conv_in']
+        rgb_conv_in = rgb_conv_in.squeeze(0).unsqueeze(1)[:32]
         print(f"Shape of rgb_conv_in: {rgb_conv_in.shape}")
         save_image(rgb_conv_in, f"{save_root}/rgb_conv_in_{rgb_t}.png")
         save_image(rgb, f"{save_root}/rgb_{rgb_t}.png")
