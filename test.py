@@ -112,6 +112,8 @@ with torch.no_grad():
             # print(f"Shape of batch_pred_latent: {batch_pred_latent.shape}")
 
         depth = vae.decode(batch_pred_latent / vae.config.scaling_factor, return_dict=False)[0]
+        _depth_latent = batch_pred_latent.squeeze(0).unsqueeze(1)
+        save_image(_depth_latent, f"{save_root}/depth_latent_{rgb_t}.png")
         depth_conv_in = feature_maps['conv_in']
         depth_conv_in = depth_conv_in.squeeze(0).unsqueeze(1)[:32]
         print(f"Shape of depth_conv_in: {depth_conv_in.shape}")
@@ -122,6 +124,8 @@ with torch.no_grad():
         save_image(depth, f"{save_root}/depth_{rgb_t}.png")
 
         rgb = vae.decode(noisy_latent / vae.config.scaling_factor, return_dict=False)[0]
+        _rgb_latent = noisy_latent.squeeze(0).unsqueeze(1)
+        save_image(_rgb_latent, f"{save_root}/rgb_latent_{rgb_t}.png")
         rgb_conv_in = feature_maps['conv_in']
         rgb_conv_in = rgb_conv_in.squeeze(0).unsqueeze(1)[:32]
         print(f"Shape of rgb_conv_in: {rgb_conv_in.shape}")
