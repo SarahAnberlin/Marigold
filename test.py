@@ -83,6 +83,9 @@ with torch.no_grad():
     )  # [B, 4, h, w]
 
     for rgb_t in timesteps:
+        if int(50 + rgb_t) % 50 != 0:
+            continue
+
         print(f"Processing timestep: {rgb_t}")
         noisy_latent = rgb_noise_scheduler.add_noise(
             latent, noise, rgb_t,
