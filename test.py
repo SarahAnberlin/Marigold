@@ -25,6 +25,16 @@ vae.eval()
 text_encoder.eval()
 unet.eval()
 
+feature_maps = {}
+
+
+def hook(module, input, output):
+    feature_maps['conv_in'] = output.detach().clone()
+
+
+# 注册 hook
+vae.decoder.conv_in.register_forward_hook(hook)
+
 image = Image.open('plain.jpg').convert('RGB')
 
 transform = torchvision.transforms.Compose([
@@ -99,10 +109,16 @@ with torch.no_grad():
             # print(f"Shape of batch_pred_latent: {batch_pred_latent.shape}")
 
         depth = vae.decode(batch_pred_latent / vae.config.scaling_factor, return_dict=False)[0]
-        rgb = vae.decode(noisy_latent / vae.config.scaling_factor, return_dict=False)[0]
+        depth_conv_in = feature_maps['conv_in']
+        print(f"Shape of depth_conv_in: {depth_conv_in.shape}")
+        save_image(depth_conv_in, f"{save_root}/depth_conv_in_{rgb_t}.png")
         depth = depth.mean(dim=1, keepdim=True)
         depth = torch.clip(depth, -1, 1)
         depth = (depth + 1) / 2
-
         save_image(depth, f"{save_root}/depth_{rgb_t}.png")
+
+        rgb = vae.decode(noisy_latent / vae.config.scaling_factor, return_dict=False)[0]
+        rgb_conv_in = feature_maps['conv_in']
+        print(f"Shape of rgb_conv_in: {rgb_conv_in.shape}")
+        save_image(rgb_conv_in, f"{save_root}/rgb_conv_in_{rgb_t}.png")
         save_image(rgb, f"{save_root}/rgb_{rgb_t}.png")
